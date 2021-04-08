@@ -8,6 +8,10 @@ const {
     routes: cryptoRoutes,
 } = require('./crypto/routes');
 
+const {
+    routes: newsRoutes,
+} = require('./news/routes');
+
 const app = express();
 
 const swaggerOptions = {
@@ -17,7 +21,7 @@ const swaggerOptions = {
             version: '1.0.0'
         }
     },
-    apis: ['src/crypto/routes.js'],
+    apis: ['src/crypto/routes.js', 'src/news/routes.js'],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
@@ -27,6 +31,7 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 app.use(cors());
 app.use(express.json());
 app.use('/crypto', cryptoRoutes);
+app.use('/news', newsRoutes)
 /**
  * @swagger
  * /top-100-cryptos:
