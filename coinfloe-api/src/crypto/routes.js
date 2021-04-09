@@ -1,27 +1,16 @@
 const express = require('express');
 const fetch = require('node-fetch');
-var ccxt = require('ccxt');
-const ccxws = require("ccxws");
-const kraken = new ccxws.kraken();
-const publicKey = '870e32b5723764a8f9c470f7a2c27ce118fde8d43477cdc618d67d803707fa84';   // e.g. 12326758a39a720e15d064cab3c1f0a9332d107de453bd41926bb3acd565059e
-const privateKey = 'e4d2bd8098e82609e84e5b8d44572dee8768a4aad1001ea5ac2d5062687578a1133b4fd92f64cf110e3a1975d442f55f8f93fd8d03594ff1e32ba8d07f05bb95'; // e.g. 6991cf4c9b518293429db0df6085d1731074bed8abccd7f0279a52fac5b0c1a8a2f6d28e11a50fbb1c6575d1407e637f9ad7c73fbddfa87c5d418fd58971f829
-const Shrimpy = require('shrimpy-node');
-const privateClient = new Shrimpy.ShrimpyApiClient(publicKey, privateKey);
+const CoinMarketCap = require('coinmarketcap-api');
 
-let apiClient = null;
-let wsClient = null;
-let token = null;
-
-console.log(ccxt.exchanges);
-
+const api_key_cm = '81a77fb7-e45a-4a67-8bca-71b18665401b';
+const crypto_api_key = "641209cc5125f295360f388673546b58ea5e5a6d26846d4b05bd03d61ef8e4f2";
+const client = new CoinMarketCap(api_key_cm);
 
 const routes = express.Router({
     mergeParams: true
 });
 
 
-
-const crypto_api_key = "641209cc5125f295360f388673546b58ea5e5a6d26846d4b05bd03d61ef8e4f2";
 
 
 routes.get('/', (req, res) => {
@@ -68,6 +57,7 @@ routes.get('/top-100-cryptos', (req, res) => {
             res.send({ data });
         });
 });
+
 
 /**
  * @swagger
@@ -309,6 +299,55 @@ routes.get('/popular-news', (req, res) => {
             res.send({ data });
         });
 });
+
+/**
+ * @swagger
+ * /crypto/info/{symbol}:
+ *   get:
+ *     description: Get top 100
+ *     tags:
+ *      - Coin Market Cap
+ *     responses:
+ *       200:
+ *         description: Success
+ *     parameters:
+ *     - name: symbol
+ *       description: get specific crypto by symbol
+ *       in: path
+ *       required: true
+ *       type: string
+ */
+routes.get('/info/:symbol', (req, res) => {
+    let symbol = req.params.symbol.toString();
+    client.getQuotes({symbol: 'BTC,ETH'}).then(console.log).catch(console.error)
+    client.getMetadata({ symbol: symbol }).then(data => { res.send({data})}).catch(console.error);
+});
+
+/**
+ * @swagger
+ * /crypto/info/{symbol}:
+ *   get:
+ *     description: Get top 100
+ *     tags:
+ *      - Coin Market Cap
+ *     responses:
+ *       200:
+ *         description: Success
+ *     parameters:
+ *     - name: symbol
+ *       description: get specific crypto by symbol
+ *       in: path
+ *       required: true
+ *       type: string
+ */
+routes.get('/info/:symbol', (req, res) => {
+    let symbol = req.params.symbol.toString();
+    client.getQuotes({symbol: 'BTC,ETH'}).then(console.log).catch(console.error)
+    client.getMetadata({ symbol: symbol }).then(data => { res.send({data})}).catch(console.error);
+});
+
+
+
 
 module.exports = {
     routes
