@@ -319,9 +319,35 @@ routes.get('/popular-news', (req, res) => {
  */
 routes.get('/info/:symbol', (req, res) => {
     let symbol = req.params.symbol.toString();
-    client.getQuotes({symbol: 'BTC,ETH'}).then(console.log).catch(console.error)
+    // client.getQuotes({symbol: 'BTC,ETH'}).then(console.log).catch(console.error)
     client.getMetadata({ symbol: symbol }).then(data => { res.send({data})}).catch(console.error);
 });
+
+/**
+ * @swagger
+ * /crypto/info/quotes/latest/{fiat}:
+ *   get:
+ *     description: Get top 100
+ *     tags:
+ *      - Coin Market Cap
+ *     responses:
+ *       200:
+ *         description: Success
+*     parameters:
+ *     - name: fiat
+ *       description: get specific crypto by symbol
+ *       in: path
+ *       required: true
+ *       type: string
+ */
+ routes.get('/info/quotes/latest/:fiat', (req, res) => {
+    let symbol = req.params.fiat.toString();
+    // client.getQuotes({symbol: 'BTC,ETH'}).then(console.log).catch(console.error)
+    // client.getMetadata({ symbol: symbol }).then(data => { res.send({data})}).catch(console.error);
+    client.getGlobal({convert: symbol}).then(data => { res.send({data})}).catch(console.error)
+    // client.getMetadata('USD').then(data => { res.send({data})}).catch(console.error);
+});
+
 
 /**
  * @swagger
@@ -333,7 +359,7 @@ routes.get('/info/:symbol', (req, res) => {
  *     responses:
  *       200:
  *         description: Success
- *     parameters:
+ *     parameters:  
  *     - name: symbol
  *       description: get specific crypto by symbol
  *       in: path
