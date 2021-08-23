@@ -50,7 +50,7 @@ routes.get('/global-metrics', (req, res) => {
  *         description: Success
  */
 routes.get('/top-100-cryptos', (req, res) => {
-    let url = `https://min-api.cryptocompare.com/data/top/totalvolfull?limit=100&tsym=USD&api_key=${crypto_api_key}`;
+    let url = `https://min-api.cryptocompare.com/data/top/mktcapfull?limit=100&tsym=USD&api_key=${crypto_api_key}`;
     fetch(url)
         .then(res => res.json())
         .then(data => {
