@@ -37,6 +37,73 @@ routes.get('/global-metrics', (req, res) => {
         });
 });
 
+/**
+ * @swagger
+ * /crypto/cg-top-250:
+ *   get:
+ *     description: Get top 250 coins from coin gecko
+ *     tags:
+ *      - Coin Gecko
+ *     responses:
+ *       200:
+ *         description: Success
+ */
+ routes.get('/cg-top-250', (req, res) => {
+    let url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=7d%2C30d%2C1y`;
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            res.send({ data });
+        });
+});
+
+/**
+ * @swagger
+ * /crypto/cg-trending-coins:
+ *   get:
+ *     description: Get coin gecko trending coins
+ *     tags:
+ *      - Coin Gecko
+ *     responses:
+ *       200:
+ *         description: Success
+ */
+ routes.get('/cg-trending-coins', (req, res) => {
+    let url = `https://api.coingecko.com/api/v3/search/trending`;
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            res.send({ data });
+        });
+});
+
+/**
+ * @swagger
+ * /crypto/cg-coin-info/{id}:
+ *   get:
+ *     description: Get top 250 coins from coin gecko
+ *     tags:
+ *      - Coin Gecko
+ *     responses:
+ *       200:
+ *         description: Success
+ *     parameters:
+ *     - name: id
+ *       description: get specific crypto by name
+ *       in: path
+ *       required: true
+ *       type: string
+ */
+ routes.get('/cg-coin-info/:id', (req, res) => {
+    let id = req.params.id.toString();
+    let url = `https://api.coingecko.com/api/v3/coins/${id}?localization=false&tickers=true&market_data=true&community_data=true&sparkline=true
+    `;
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            res.send({ data });
+        });
+});
 
 /**
  * @swagger
